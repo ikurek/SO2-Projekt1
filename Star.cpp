@@ -25,7 +25,7 @@ int Star::getRandomSleepTime() {
     // Calculate seed from current time and thread ID
     unsigned int seed = time(NULL) + (this -> x);
     // Generate random number in range
-    int randNum = rand_r(&seed)%(200);
+    int randNum = rand_r(&seed)%(400);
     // Return found number
     return randNum;
 }
@@ -37,4 +37,10 @@ void Star::moveByOne() {
     } else {
       y = y + 1;
     }
+}
+
+void Star::validate() {
+  if (y >= yMax) {
+      canMove = false;
+  }
 }

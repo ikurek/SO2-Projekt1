@@ -12,6 +12,7 @@ public:
     Star(int threadID, int numberOfTerminalRows);
     Star();
     void moveByOne();
+    void validate();
     bool canMove;
     int timeToNextMove;
     int x;

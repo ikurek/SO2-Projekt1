@@ -12,6 +12,7 @@ void fallingStarThread(Star* starInThread) {
     while (starInThread->canMove) {
         this_thread::sleep_for(chrono::milliseconds(starInThread->timeToNextMove));
         starInThread -> moveByOne();
+        starInThread -> validate();
     }
 }
 
@@ -38,12 +39,19 @@ void uiThread() {
       stars[i] = Star(i, numberOfTerminalRows);
       threads[i] = thread(fallingStarThread, &stars[i]);
   }
-
+  // Loop prints stars until they are all marked as locked
   while(shouldContinuePrinting(stars)) {
     // Print stars in their current position
     for(int  i = 0;  i < numberOfTerminalColumns; ++ i) {
-      mvprintw(stars[i].y - 1, stars[i].x, " ");
-      mvprintw(stars[i].y, stars[i].x, "*");
+      // If star is moving, draw it
+      if(stars[i].canMove) {
+        mvprintw(stars[i].y - 1, stars[i].x, " ");
+        mvprintw(stars[i].y, stars[i].x, "*");
+      }
+      // If it finished, draw underscore instead
+      else {
+        mvprintw(stars[i].y - 1, stars[i].x, "_");
+      }
     }
     // Refresh display
     refresh();
